@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>paserial — Automatisation PAN-OS via console série</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 760px; margin: 60px auto; padding: 0 20px; color: #222; }
+    h1 { font-size: 2rem; margin-bottom: 4px; }
+    .tagline { color: #555; margin-top: 0; }
+    .version { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 2px 10px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; margin: 24px 0; }
+    th { background: #f5f5f5; text-align: left; padding: 8px 12px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: .05em; }
+    td { padding: 10px 12px; border-top: 1px solid #eee; }
+    td a { color: #1565c0; text-decoration: none; font-weight: 500; }
+    td a:hover { text-decoration: underline; }
+    pre { background: #f8f8f8; border: 1px solid #ddd; border-radius: 6px; padding: 16px; overflow-x: auto; font-size: 0.88rem; }
+    .note { font-size: 0.85rem; color: #666; margin-top: 32px; }
+  </style>
+</head>
+<body>
+  <h1>paserial</h1>
+  <p class="tagline">Automatisation PAN-OS via console série — sans SSH, sans API.</p>
+  <p><span class="version" id="ver">v0.0.0</span> — <a href="https://github.com/jiiro974/paserial-release/releases">Toutes les releases</a></p>
+
+  <h2>Téléchargement</h2>
+  <table>
+    <thead><tr><th>Plateforme</th><th>Binaire</th></tr></thead>
+    <tbody id="dl"></tbody>
+  </table>
+
+  <h2>Démarrage rapide</h2>
+  <pre>paserial --port /dev/ttyUSB0 upgrade.txt
+paserial --port /dev/ttyUSB0 --dry-run upgrade.txt
+paserial debug-panorama --port /dev/ttyUSB0
+paserial self-update</pre>
+
+  <p class="note">Checksum SHA256 : <a href="#" id="checksum-link">checksums.txt</a></p>
+
+  <script>
+    const repo = 'jiiro974/paserial-release';
+    const assets = [
+      { file: 'paserial-linux-amd64',      label: 'Linux x86-64' },
+      { file: 'paserial-linux-arm64',       label: 'Linux ARM64' },
+      { file: 'paserial-darwin-amd64',      label: 'macOS Intel' },
+      { file: 'paserial-darwin-arm64',      label: 'macOS Apple Silicon' },
+      { file: 'paserial-windows-amd64.exe', label: 'Windows x86-64' },
+    ];
+    fetch(`https://api.github.com/repos/${repo}/releases/latest`)
+      .then(r => r.json())
+      .then(rel => {
+        document.getElementById('ver').textContent = rel.tag_name || 'dev';
+        const tbody = document.getElementById('dl');
+        assets.forEach(a => {
+          const asset = (rel.assets || []).find(x => x.name === a.file);
+          const tr = document.createElement('tr');
+          tr.innerHTML = asset
+            ? `<td>${a.label}</td><td><a href="${asset.browser_download_url}">${a.file}</a></td>`
+            : `<td>${a.label}</td><td><em>non disponible</em></td>`;
+          tbody.appendChild(tr);
+        });
+        const cs = (rel.assets || []).find(x => x.name === 'checksums.txt');
+        if (cs) document.getElementById('checksum-link').href = cs.browser_download_url;
+      })
+      .catch(() => {});
+  </script>
+</body>
+</html>
