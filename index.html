@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>paserial — Automatisation PAN-OS via console série</title>
+  <title>paserial v0.1.0</title>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 760px; margin: 60px auto; padding: 0 20px; color: #222; }
     h1 { font-size: 2rem; margin-bottom: 4px; }
@@ -21,48 +21,34 @@
 <body>
   <h1>paserial</h1>
   <p class="tagline">Automatisation PAN-OS via console série — sans SSH, sans API.</p>
-  <p><span class="version" id="ver">v0.0.0</span> — <a href="https://github.com/jiiro974/paserial-release/releases">Toutes les releases</a></p>
+  <p><span class="version">v0.1.0</span> — <a href="https://github.com/jiiro974/paserial-release/releases">Toutes les releases</a></p>
 
-  <h2>Téléchargement</h2>
+  <h2>Téléchargements</h2>
   <table>
     <thead><tr><th>Plateforme</th><th>Binaire</th></tr></thead>
-    <tbody id="dl"></tbody>
+    <tbody>
+      <tr><td>Linux x86-64</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.1.0/paserial-linux-amd64">paserial-linux-amd64</a></td></tr>
+      <tr><td>Linux ARM64</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.1.0/paserial-linux-arm64">paserial-linux-arm64</a></td></tr>
+      <tr><td>macOS Intel</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.1.0/paserial-darwin-amd64">paserial-darwin-amd64</a></td></tr>
+      <tr><td>macOS Apple Silicon</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.1.0/paserial-darwin-arm64">paserial-darwin-arm64</a></td></tr>
+      <tr><td>Windows x86-64</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.1.0/paserial-windows-amd64.exe">paserial-windows-amd64.exe</a></td></tr>
+    </tbody>
   </table>
 
-  <h2>Démarrage rapide</h2>
-  <pre>paserial --port /dev/ttyUSB0 upgrade.txt
-paserial --port /dev/ttyUSB0 --dry-run upgrade.txt
+  <h2>Installation rapide</h2>
+  <pre># Linux / macOS
+curl -Lo paserial https://github.com/jiiro974/paserial-release/releases/download/v0.1.0/paserial-$(uname -s | tr '[:upper:]' '[:lower:]')-$(uname -m | sed s/x86_64/amd64/)
+chmod +x paserial && sudo mv paserial /usr/local/bin/
+
+# Mise à jour
+paserial self-update</pre>
+
+  <h2>Usage</h2>
+  <pre>paserial --port /dev/ttyUSB0 upgrade-10.2.8.txt
+paserial --port /dev/ttyUSB0 --dry-run upgrade-10.2.8.txt
 paserial debug-panorama --port /dev/ttyUSB0
 paserial self-update</pre>
 
-  <p class="note">Checksum SHA256 : <a href="#" id="checksum-link">checksums.txt</a></p>
-
-  <script>
-    const repo = 'jiiro974/paserial-release';
-    const assets = [
-      { file: 'paserial-linux-amd64',      label: 'Linux x86-64' },
-      { file: 'paserial-linux-arm64',       label: 'Linux ARM64' },
-      { file: 'paserial-darwin-amd64',      label: 'macOS Intel' },
-      { file: 'paserial-darwin-arm64',      label: 'macOS Apple Silicon' },
-      { file: 'paserial-windows-amd64.exe', label: 'Windows x86-64' },
-    ];
-    fetch(`https://api.github.com/repos/${repo}/releases/latest`)
-      .then(r => r.json())
-      .then(rel => {
-        document.getElementById('ver').textContent = rel.tag_name || 'dev';
-        const tbody = document.getElementById('dl');
-        assets.forEach(a => {
-          const asset = (rel.assets || []).find(x => x.name === a.file);
-          const tr = document.createElement('tr');
-          tr.innerHTML = asset
-            ? `<td>${a.label}</td><td><a href="${asset.browser_download_url}">${a.file}</a></td>`
-            : `<td>${a.label}</td><td><em>non disponible</em></td>`;
-          tbody.appendChild(tr);
-        });
-        const cs = (rel.assets || []).find(x => x.name === 'checksums.txt');
-        if (cs) document.getElementById('checksum-link').href = cs.browser_download_url;
-      })
-      .catch(() => {});
-  </script>
+  <p class="note">Checksums SHA256 : <a href="https://github.com/jiiro974/paserial-release/releases/download/v0.1.0/checksums.txt">checksums.txt</a></p>
 </body>
 </html>
