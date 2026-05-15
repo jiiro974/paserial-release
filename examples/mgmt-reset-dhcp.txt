@@ -1,0 +1,33 @@
+# Reset Management Interface + DHCP
+# Name: Management Interface Reset to DHCP
+# Objective: Clear static management interface configuration and switch to DHCP.
+# Usage: paserial --port /dev/ttyUSB0 --force examples/mgmt-reset-dhcp.txt
+#
+# Notes:
+#   - Use --force to skip pause if some static values (IP, DNS...) don't exist yet
+#   - After commit, the management IP will change — find new IP with: show system info
+#   - Run from serial console only (SSH will drop when IP changes)
+
+# Enter configuration mode
+configure
+
+# Remove static IP configuration
+delete deviceconfig system ip-address
+delete deviceconfig system netmask
+delete deviceconfig system default-gateway
+
+# Remove static DNS (DHCP will provide DNS)
+delete deviceconfig system dns-setting servers primary
+delete deviceconfig system dns-setting servers secondary
+
+# Set management interface to DHCP
+set deviceconfig system type dhcp-client
+
+# Commit — management IP will change after this
+commit
+
+# Exit configuration mode
+exit
+
+# Verify new IP assigned by DHCP
+show system info
