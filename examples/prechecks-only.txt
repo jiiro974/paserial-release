@@ -1,0 +1,30 @@
+# Pre-Check Diagnostics (Read-Only)
+# Name: System Diagnostics and Health Check
+# Objective: Run diagnostic commands to verify system health and connectivity. NO modifications to firewall.
+# Usage: paserial --port /dev/ttyUSB0 examples/prechecks-only.txt
+
+# System Information
+show system info
+
+# Network Configuration
+show interface all
+
+# Routing Information
+show routing route
+
+# Disk Space
+show system disk-space
+
+# System Clock
+show clock
+
+# License Information
+request license info
+
+# Jobs Status
+show jobs all
+
+# Connectivity Tests
+ping count 3 host 8.8.8.8
+ping count 3 host updates.paloaltonetworks.com
+ping count 3 host panorama.paloaltonetworks.com

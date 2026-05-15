@@ -1,0 +1,30 @@
+# Upgrade to PAN-OS with Claim Key Activation
+# Name: Upgrade with Auth Code Activation
+# Objective: Activate device via claim key, then perform full upgrade to latest PAN-OS
+# Usage: paserial --port /dev/ttyUSB0 --var CLAIM_KEY=ABC-123 --var VERSION=10.2.8 --yes upgrade-with-claim-key.txt
+
+# Step 1: Activate claim key
+request license activate key {{CLAIM_KEY}}
+
+# Step 2: Fetch licenses
+request license fetch
+
+# Step 3: Check content updates
+request content upgrade check
+
+# Step 4: Download Apps & Threat latest
+request content upgrade download latest
+
+# Step 5: Install Apps & Threat latest
+request content upgrade install version latest
+
+# Step 6: Check available firmware
+request system software check
+
+# Step 7: Download firmware (uses VERSION variable)
+request system software download version {{VERSION}}
+
+# Step 8: Install firmware (uses VERSION variable)
+request system software install version {{VERSION}}
+
+# Note: {{CLAIM_KEY}} and {{VERSION}} are replaced by --var flags during execution

@@ -1,0 +1,25 @@
+# Upgrade to PAN-OS 10.2.8
+# Name: Full System Upgrade
+# Objective: Complete upgrade procedure to PAN-OS 10.2.8 including licenses, content, and firmware
+# Usage: paserial --port /dev/ttyUSB0 --yes --debug-bundle examples/upgrade-10.2.8.txt
+
+# Step 1: Fetch licenses
+request license fetch
+
+# Step 2: Check content updates
+request content upgrade check
+
+# Step 3: Download Apps & Threat latest
+request content upgrade download latest
+
+# Step 4: Install Apps & Threat latest
+request content upgrade install version latest
+
+# Step 5: Check available firmware
+request system software check
+
+# Step 6: Download firmware
+request system software download version 10.2.8
+
+# Step 7: Install firmware
+request system software install version 10.2.8

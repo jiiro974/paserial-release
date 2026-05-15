@@ -1,0 +1,16 @@
+# Content Update Only (Apps & Threat)
+# Name: Content Update Procedure
+# Objective: Update Apps & Threat content only. Does NOT update firmware.
+# Usage: paserial --port /dev/ttyUSB0 --yes examples/content-only.txt
+
+# Step 1: Fetch licenses
+request license fetch
+
+# Step 2: Check content updates
+request content upgrade check
+
+# Step 3: Download Apps & Threat latest
+request content upgrade download latest
+
+# Step 4: Install Apps & Threat latest
+request content upgrade install version latest
