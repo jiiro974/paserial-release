@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>paserial v0.1.1</title>
+  <title>paserial v0.2.0</title>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 760px; margin: 60px auto; padding: 0 20px; color: #222; }
     h1 { font-size: 2rem; margin-bottom: 4px; }
@@ -21,23 +21,23 @@
 <body>
   <h1>paserial</h1>
   <p class="tagline">Automatisation PAN-OS via console série — sans SSH, sans API.</p>
-  <p><span class="version">v0.1.1</span> — <a href="https://github.com/jiiro974/paserial-release/releases">Toutes les releases</a></p>
+  <p><span class="version">v0.2.0</span> — <a href="https://github.com/jiiro974/paserial-release/releases">Toutes les releases</a></p>
 
   <h2>Téléchargements</h2>
   <table>
     <thead><tr><th>Plateforme</th><th>Binaire</th></tr></thead>
     <tbody>
-      <tr><td>Linux x86-64</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.1.1/paserial-linux-amd64">paserial-linux-amd64</a></td></tr>
-      <tr><td>Linux ARM64</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.1.1/paserial-linux-arm64">paserial-linux-arm64</a></td></tr>
-      <tr><td>macOS Intel</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.1.1/paserial-darwin-amd64">paserial-darwin-amd64</a></td></tr>
-      <tr><td>macOS Apple Silicon</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.1.1/paserial-darwin-arm64">paserial-darwin-arm64</a></td></tr>
-      <tr><td>Windows x86-64</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.1.1/paserial-windows-amd64.exe">paserial-windows-amd64.exe</a></td></tr>
+      <tr><td>Linux x86-64</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.2.0/paserial-linux-amd64">paserial-linux-amd64</a></td></tr>
+      <tr><td>Linux ARM64</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.2.0/paserial-linux-arm64">paserial-linux-arm64</a></td></tr>
+      <tr><td>macOS Intel</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.2.0/paserial-darwin-amd64">paserial-darwin-amd64</a></td></tr>
+      <tr><td>macOS Apple Silicon</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.2.0/paserial-darwin-arm64">paserial-darwin-arm64</a></td></tr>
+      <tr><td>Windows x86-64</td><td><a href="https://github.com/jiiro974/paserial-release/releases/download/v0.2.0/paserial-windows-amd64.exe">paserial-windows-amd64.exe</a></td></tr>
     </tbody>
   </table>
 
   <h2>Installation rapide</h2>
   <pre># Linux / macOS
-curl -Lo paserial https://github.com/jiiro974/paserial-release/releases/download/v0.1.1/paserial-$(uname -s | tr '[:upper:]' '[:lower:]')-$(uname -m | sed s/x86_64/amd64/)
+curl -Lo paserial https://github.com/jiiro974/paserial-release/releases/download/v0.2.0/paserial-$(uname -s | tr '[:upper:]' '[:lower:]')-$(uname -m | sed s/x86_64/amd64/)
 chmod +x paserial && sudo mv paserial /usr/local/bin/
 
 # Mise à jour
@@ -49,6 +49,6 @@ paserial --port /dev/ttyUSB0 --dry-run upgrade-10.2.8.txt
 paserial debug-panorama --port /dev/ttyUSB0
 paserial self-update</pre>
 
-  <p class="note">Checksums SHA256 : <a href="https://github.com/jiiro974/paserial-release/releases/download/v0.1.1/checksums.txt">checksums.txt</a></p>
+  <p class="note">Checksums SHA256 : <a href="https://github.com/jiiro974/paserial-release/releases/download/v0.2.0/checksums.txt">checksums.txt</a></p>
 </body>
 </html>
