@@ -3,7 +3,7 @@
   release depuis GitHub et installe (service, firewall, PATH, config).
 
   Usage (PowerShell admin) :
-      irm https://raw.githubusercontent.com/jiiro974/paserial-release/main/install.ps1 | iex
+      irm https://raw.githubusercontent.com/jiiro974/paserial-release/gh-pages/install.ps1 | iex
   Désinstallation :
       .\install-windows.ps1 -Uninstall   (après extraction du zip)
 #>
