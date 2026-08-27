@@ -30,7 +30,7 @@ $env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine")
 
 Remove-Item $Zip -ErrorAction SilentlyContinue
 Write-Host ""
-Write-Host "Installation terminée. Démarrez : paserial serve --config C:\ProgramData\paserial\config.toml"
+Write-Host "Installation terminée. Démarrez : paserial serve"
 if ((Get-Command paserial -ErrorAction SilentlyContinue) -eq $null) {
   Write-Host "(si 'paserial' n'est pas reconnu : rouvrez PowerShell ou relancez avec le nouveau PATH)"
 }
