@@ -1,0 +1,84 @@
+# Onboarding complet : sortie ZTP + DHCP + licences + firmware + Panorama
+# Name: ZTP Offboarding to Panorama-Managed
+# Objective: Sortir le firewall du mode ZTP, retirer les virtual wires, configurer ethernet1/1 en DHCP, récupérer les licences, mettre à jour le firmware et déclarer le firewall dans Panorama.
+# Usage: paserial --port /dev/ttyUSB0 --var VERSION=10.2.8 --var PANORAMA_IP=10.0.0.5 --var VWIRE=default-vwire --var ZONE_VW=default-vwire --var ZONE_L3=LAN --yes examples/onboard-dhcp-panorama.txt
+#
+# Notes:
+#   - À exécuter uniquement en console série (SSH sera coupé dès que le réseau change)
+#   - Le port ethernet1/1 reçoit son IP via DHCP (route Internet + connexion Panorama)
+#   - Variables à fournir avec --var : VERSION, PANORAMA_IP, VWIRE, ZONE_VW, ZONE_L3
+#   - ZONE_VW : zone d'origine du virtual wire (supprimée) ; ZONE_L3 : nouvelle zone layer3
+
+# ---------- Étape 1 : sortie du mode ZTP ----------
+# État du bootstrap ZTP en cours
+show ztp-plugin bootstrap status
+
+# Supprime la configuration de bootstrap ZTP -> le firewall cesse de contacter le serveur ZTP
+request ztp-plugin bootstrap delete
+
+# ---------- Étape 2 : retrait des virtual wires et refonte des zones ----------
+# Passer en mode configuration
+configure
+
+# Retire le virtual wire de la zone qui le référençait (sinon suppression bloquée)
+delete zone {{ZONE_VW}} network virtual-wire {{VWIRE}}
+
+# Supprime le virtual wire (adapter le nom / répéter si plusieurs)
+delete network virtual-wire {{VWIRE}}
+
+# Désactive le mode virtual wire du système (les interfaces redeviennent configurables)
+delete deviceconfig system virtual-wire
+
+# Supprime l'ancienne zone virtual-wire devenue vide
+delete zone {{ZONE_VW}}
+
+# Recrée une zone layer3 (adapter le nom si ZONE_VW et ZONE_L3 diffèrent)
+set zone {{ZONE_L3}} network layer3
+
+# Rattache l'interface ethernet1/1 à la nouvelle zone
+set zone {{ZONE_L3}} network layer3 ethernet1/1
+
+# ---------- Étape 3 : configuration de ethernet1/1 en DHCP ----------
+# Passe l'interface en mode layer3
+set network interface ethernet ethernet1/1 layer3
+
+# Active le client DHCP sur ethernet1/1
+set network interface ethernet ethernet1/1 layer3 dhcp-client enable yes
+
+# Définit la métrique de route DHCP (10 = route préférée)
+set network interface ethernet ethernet1/1 layer3 dhcp-client ipv4 route-metric 10
+
+# Applique la configuration (l'IP DHCP est obtenue après le commit)
+commit
+
+# Sortir du mode configuration
+exit
+
+# Vérifie l'adresse IP obtenue par DHCP
+show interface ethernet1/1
+
+# Vérifie la connectivité Internet (requis pour licences et firmware)
+ping count 3 host updates.paloaltonetworks.com
+
+# ---------- Étape 4 : récupération des licences ----------
+request license fetch
+
+# ---------- Étape 5 : mise à jour du firmware ----------
+request system software check
+request system software download version {{VERSION}}
+request system software install version {{VERSION}}
+
+# ---------- Étape 6 : déclaration du firewall dans Panorama ----------
+# Renseigne l'adresse du serveur Panorama puis applique
+configure
+set deviceconfig system panorama-server {{PANORAMA_IP}}
+commit
+exit
+
+# Force la demande de connexion/enregistrement vers Panorama
+# (si enregistrement par auth-code : request system panorama-connectivity auth-code <code>)
+request system panorama-connectivity
+
+# ---------- Étape 7 : vérification de l'enregistrement Panorama ----------
+# État de la connexion (Connected: yes) et du device group
+show panorama-status
