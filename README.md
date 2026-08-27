@@ -35,7 +35,7 @@ sudo mv paserial /usr/local/bin/
 PowerShell **en administrateur** — bootstrap complet (binaire, PATH, firewall, service, config) :
 
 ```powershell
-irm https://raw.githubusercontent.com/jiiro974/paserial-release/gh-pages/install.ps1 | iex
+irm https://github.com/jiiro974/paserial-release/releases/latest/download/install.ps1 | iex
 ```
 
 Alternative : télécharger `paserial-windows-amd64.exe` depuis la [page des releases](../../releases/latest) et le placer dans un répertoire inclus dans le `PATH`.
