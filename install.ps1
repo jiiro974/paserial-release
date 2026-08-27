@@ -25,6 +25,12 @@ Expand-Archive -Path $Zip -DestinationPath $Dir -Force
 Set-ExecutionPolicy -Scope Process Bypass -Force
 & "$Dir\install-windows.ps1"
 
+# Réfléter le PATH machine dans la session courante (paserial utilisable immédiatement).
+$env:Path = [Environment]::GetEnvironmentVariable("Path", "Machine")
+
 Remove-Item $Zip -ErrorAction SilentlyContinue
 Write-Host ""
 Write-Host "Installation terminée. Démarrez : paserial serve --config C:\ProgramData\paserial\config.toml"
+if ((Get-Command paserial -ErrorAction SilentlyContinue) -eq $null) {
+  Write-Host "(si 'paserial' n'est pas reconnu : rouvrez PowerShell ou relancez avec le nouveau PATH)"
+}
