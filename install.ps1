@@ -20,6 +20,9 @@ Invoke-WebRequest -Uri "$Base/paserial-windows.zip" -OutFile $Zip
 if (Test-Path $Dir) { Remove-Item -Recurse -Force $Dir }
 Expand-Archive -Path $Zip -DestinationPath $Dir -Force
 
+# Bypass ExecutionPolicy pour le processus courant uniquement
+# (ne modifie pas la politique système), sinon install-windows.ps1 ne se lance pas.
+Set-ExecutionPolicy -Scope Process Bypass -Force
 & "$Dir\install-windows.ps1"
 
 Remove-Item $Zip -ErrorAction SilentlyContinue
